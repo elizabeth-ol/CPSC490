@@ -1,0 +1,8 @@
+git add .
+git commit -m "dfljsfljflksd"
+git push origin main
+
+or
+
+git commit -am "dfljsfljflksd"
+git push origin main
