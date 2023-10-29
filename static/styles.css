@@ -1,0 +1,27 @@
+@font-face {
+    font-family: "Neue-Haas-Grotesk";
+    src: url("/static/Neue-Haas-Grotesk/NeueHaasDisplayRoman.ttf");
+  }
+
+
+  body {
+    font-family: "Neue-Haas-Grotesk";
+    padding: 0%;
+    color: black;
+  }
+
+  h1{
+    font-size: 40px;
+    font-family: "Neue-Haas-Grotesk";
+    padding-top:50px;
+    padding-right: 20px;
+    padding-bottom: 50px;
+    padding-left: 20px;
+  }
+
+  .container {
+    display: grid;
+    align-items: center; 
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5px;
+   }
