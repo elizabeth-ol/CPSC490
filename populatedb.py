@@ -18,7 +18,11 @@ for project_folder in os.listdir(PROJ_DIR):
         thumbnail_path = os.path.join(img_folder, "thumbnail.jpg")
         description_path = os.path.join(txt_folder, "projdescription.txt")
         title_path = os.path.join(txt_folder, "title.txt")
-        thumbnail_path = os.path.join(img_folder, "thumbnail.jpg")
+        image1_path = os.path.join(img_folder, "image1.jpg")
+        image2_path = os.path.join(img_folder, "image2.jpg")
+        image3_path = os.path.join(img_folder, "image3.jpg")
+
+
 
         if os.path.exists(thumbnail_path) and os.path.exists(description_path) and os.path.exists(title_path):
             with open(description_path, "r") as description_file:
@@ -27,12 +31,12 @@ for project_folder in os.listdir(PROJ_DIR):
                 project_title = title_file.read().strip()
 
             if description and project_title:
-                # Insert title, description, and image file path into the database
+                # Insert title, project description, and image file paths into the database
                 cursor.execute('''
-                    INSERT INTO projects (project_title, project_description, thumbnail_path) VALUES (?, ?, ?)
-                ''', (project_title, description, thumbnail_path))
+                    INSERT INTO projects (project_title, project_description, thumbnail_path, image1_path, image2_path, image3_path) VALUES (?, ?, ?, ?)
+                ''', (project_title, description, thumbnail_path, image1_path, image2_path, image3_path))
         else:
-            print(f"Skipping {project_folder} due to missing image, title, or description file.")
+            print(f"Could not insert {project_folder} due to missing image, title, or description file.")
 
 
 
