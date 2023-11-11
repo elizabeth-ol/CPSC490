@@ -3,7 +3,16 @@
 {% block title %}CPAR Senior Projects{% endblock %}
 {% block header %}CPAR Senior Projects{% endblock %}
 {% block main %}
-
+<h1>Projects</h1>
+<div class="project-thumbnails">
+    {% for project in projects %}
+        <div class="project-thumbnail">
+            <img src="{{ project.thumbnail_path }}" alt="{{ project.project_title }}">
+            <h2>{{ project.project_title }}</h2> 
+            <p> by {{ project.student_path }}</p>          
+         </div>
+    {% endfor %}
+</div>
 
 
 {% endblock %}

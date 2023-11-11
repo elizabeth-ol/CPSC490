@@ -8,11 +8,16 @@ connection = sqlite3.connect(DB_NAME)
 cursor = connection.cursor()
 
 # Table that stores project info
+#look for documentation - with terminal
+#need to add error checkign 
+
+#add UPI as id??? does that make sense? 
+#maybe add CAS so they can view their own page 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS projects (
         id INTEGER PRIMARY KEY,
         project_title TEXT NOT NULL,
-        description TEXT NOT NULL,
+        project_description TEXT NOT NULL,
         thumbnail_path TEXT NOT NULL,
         student_name TEXT NOT NULL,
         image1_path TEXT,

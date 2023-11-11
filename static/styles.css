@@ -19,9 +19,59 @@
     padding-left: 20px;
   }
 
+  button {
+    font-size: 16px;
+    background-color: #E5CFFC;
+    font-family: "Neue-Haas-Grotesk";
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 8px;
+  }
+
   .container {
     display: grid;
     align-items: center; 
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 5px;
    }
+
+   .project-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.project-thumbnail {
+    width: 300px;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.project-thumbnail:hover {
+  background-color: pink;
+}
+
+.project-thumbnail img {
+    max-width: 100%;
+    border-radius: 5px;
+    
+}
+
+.project-thumbnail:hover img {
+  background-color: pink;
+}
+
+.project-thumbnail h2 {
+    font-size: 30px;
+}
+
+.project-thumbnail a {
+    text-decoration: none;
+    color: #0040ff;
+}
