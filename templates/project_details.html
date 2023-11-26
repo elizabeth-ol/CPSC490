@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ project.project_title }}{% endblock %}
+{% block header %}{{ project.project_title }}{% endblock %}
+{% block main %}
+
+<a href="/projects" class="btn btn-primary">Back to All Projects</a>
+
+<h1>{{ project.project_title }}</h1>
+<h2>by {{ project.student_name }}</h3>
+<h3>{{ project.track }} Track</h3>
+<h3>{{ project.classyear }}</h3>
+<img src="{{ project.thumbnail_path }}" alt="{{ project.thumbnail_alt }}">
+<p>{{ project.project_description }}</p>
+
+{% endblock %}

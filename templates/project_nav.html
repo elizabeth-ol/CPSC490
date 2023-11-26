@@ -3,12 +3,62 @@
 {% block title %}CPAR Senior Projects{% endblock %}
 {% block header %}CPAR Senior Projects{% endblock %}
 {% block main %}
-<h1>Projects</h1>
+<h1 >Projects</h1>
+
+<!-- Dropdowns for selecting graduation years and track -->
+<div class="form-group">
+    <label for="classyear">Graduation Year</label>
+    <select class="form-control" id="classyear" name="classyear">
+        <!-- The first option is a placeholder for "All" -->
+        <option value="">All</option>
+        {% for year in classyear_options %}
+            <option value="{{ year }}">{{ year }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="track">Track</label>
+    <select class="form-control" id="track" name="track">
+        <option value="">All</option>
+        {% for track in track_options %}
+            <option value="{{ track }}">{{ track }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- JavaScript to handle dropdown change and filtering -->
+<script>
+$('#classyear, #track').change(function () {
+    var selectedYear = $('#classyear').val();
+    var selectedTrack = $('#track').val();
+    console.log('Selected Year:', selectedYear);
+    console.log('Selected Track:', selectedTrack);
+
+    if (selectedYear && selectedTrack) {
+        // Show only projects matching both the selected year and track
+        $('.project-thumbnail[data-classyear="' + selectedYear + '"][data-track="' + selectedTrack + '"]').show();
+    } else if (selectedYear) {
+        // Show only projects matching the selected year
+        $('.project-thumbnail[data-classyear="' + selectedYear + '"]').show();
+    } else if (selectedTrack) {
+        // Show only projects matching the selected track
+        $('.project-thumbnail[data-track="' + selectedTrack + '"]').show();
+    } else {
+        // If no year or track is selected, show all projects
+        $('.project-thumbnail').show();
+    }
+});
+</script>
+
 <div class="project-thumbnails">
     {% for project in projects %}
-        <a href="{{ project.url }}" class="project-thumbnail">
+        <a href="{{ project.url }}" class="project-thumbnail" data-classyear="{{ project.classyear }}" data-track="{{ project.track }}">
             <div>
-                <img src="{{ project.thumbnail_path }}" alt="{{ project.project_title }}">
+                <img src="{{ project.thumbnail_path }}" alt="{{ project.thumbnail_alt }}">
                 <h2>{{ project.project_title }}</h2> 
                 <p> by {{ project.student_name }}</p>          
             </div>

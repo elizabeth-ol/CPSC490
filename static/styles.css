@@ -3,6 +3,10 @@
     src: url("/static/fonts/Neue-Haas-Grotesk/NeueHaasDisplayRoman.ttf");
   }
 
+*{
+  font-family: "Neue-Haas-Grotesk";
+
+}
 
   body {
     font-family: "Neue-Haas-Grotesk";
