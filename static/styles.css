@@ -25,10 +25,10 @@
     font-family: "Neue-Haas-Grotesk";
     border: none;
     color: black;
-    padding: 15px 32px;
+    padding: 10px 10px;
     text-align: center;
     display: inline-block;
-    border-radius: 8px;
+    border-radius: 12px;
   }
 
   .container {
@@ -37,6 +37,12 @@
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 5px;
    }
+
+
+  .container2 {
+    display: flex;
+    justify-content: center
+  }
 
    .project-thumbnails {
     display: flex;

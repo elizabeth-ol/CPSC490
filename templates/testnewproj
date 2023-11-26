@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}New Project Upload{% endblock %}
+{% block header %}Upload a new project{% endblock %}
+{% block main %}
+
+<form action="/newproject" method="post">
+
+<h3>What is the name of the project?</h3>
+    <input
+      autocomplete="off"
+      autofocus
+      class="form-control mx-auto w-auto"
+      id="projectname"
+      name="projectname"
+      placeholder="ex: An exploration of color"
+      type="text"
+    />
+
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Example textarea</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      </div>
+
+
+    </form>
+
+{% endblock %}

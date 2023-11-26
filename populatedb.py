@@ -1,12 +1,11 @@
 import os
 import sqlite3
 
-DB_NAME = "CPARprojects.db"
+DB_NAME = "projects.db"
 PROJ_DIR = "projects"
 
 connection = sqlite3.connect(DB_NAME)
 cursor = connection.cursor()
-
 
 
 for project_folder in os.listdir(PROJ_DIR):
@@ -16,8 +15,9 @@ for project_folder in os.listdir(PROJ_DIR):
         txt_folder = os.path.join(project_folder_path, "text")
 
         thumbnail_path = os.path.join(img_folder, "thumbnail.jpg")
-        description_path = os.path.join(txt_folder, "projdescription.txt")
+        description_path = os.path.join(txt_folder, "project_description.txt")
         title_path = os.path.join(txt_folder, "title.txt")
+        track_path = os.path.join(txt_folder, "track.txt")
         image1_path = os.path.join(img_folder, "image1.jpg")
         image2_path = os.path.join(img_folder, "image2.jpg")
         image3_path = os.path.join(img_folder, "image3.jpg")
@@ -29,12 +29,14 @@ for project_folder in os.listdir(PROJ_DIR):
                 description = description_file.read().strip()
             with open(title_path, "r") as title_file:
                 project_title = title_file.read().strip()
+            with open(track_path, "r") as track_file:
+                track = track_file.read().strip()
 
             if description and project_title:
                 # Insert title, project description, and image file paths into the database
                 cursor.execute('''
-                    INSERT INTO projects (project_title, project_description, thumbnail_path, image1_path, image2_path, image3_path) VALUES (?, ?, ?, ?)
-                ''', (project_title, description, thumbnail_path, image1_path, image2_path, image3_path))
+                    INSERT INTO projects (project_title, project_description, thumbnail_path, image1_path, image2_path, image3_path, track) VALUES (?, ?, ?, ?, ?, ?, ?)
+                ''', (project_title, description, thumbnail_path, image1_path, image2_path, image3_path, track))
         else:
             print(f"Could not insert {project_folder} due to missing image, title, or description file.")
 
