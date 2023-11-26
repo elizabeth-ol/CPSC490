@@ -1,5 +1,5 @@
 import os
-from flask import Flask, session, request, redirect, make_response, render_template
+from flask import Flask, session, request, redirect, make_response, render_template, url_for
 from flask_session import Session
 from flask_cas import CAS, login_required, login, logout, routing
 import sqlite3
@@ -20,7 +20,6 @@ app.config['CAS_SERVER'] = 'https://secure6.its.yale.edu/cas/'
 app.config['CAS_AFTER_LOGIN'] = 'https://127.0.0.1:5001/'
 app.config['CAS_AFTER_LOGOUT'] = 'https://127.0.0.1:5001/'
 app.secret_key = os.urandom(64)
-
 
 #----------------------------------------------------------
 # @app.before_request
@@ -57,7 +56,7 @@ def project_nav():
         project = {
             'id': project_data[0],
             'url': f"/project/{project_data[0]}",
-            'thumbnail_path': f'./static/projects/{project_data[0]}/images/thumbnail.png',
+            'thumbnail_path': url_for('static', filename=f'projects/{project_data[0]}/images/thumbnail.png'),
             'project_title': project_data[1],
             'student_name': project_data[2],
             'classyear': project_data[3],
@@ -87,7 +86,7 @@ def project_nav():
     return render_template('project_nav.html', projects=projects, classyear_options=classyear_options, track_options=track_options)
 
 
-#Render each individual project when the project is selected
+#Route for showing details of a project when it is selected
 @app.route('/project/<int:project_id>')
 def project_details(project_id):
 
@@ -101,14 +100,15 @@ def project_details(project_id):
     if project_data:
         # Dictionary with info about project to use in template
         project = {
+            'id': project_data[0],
             'project_title': project_data['project_title'],
             'student_name': project_data['student_name'],
             'project_description': project_data['project_description'],
-            'thumbnail_path': f'./static/projects/{project_data[0]}/images/thumbnail.png',
+            'thumbnail_path': url_for('static', filename=f'projects/{project_data[0]}/images/thumbnail.png'),
             'thumbnail_alt': project_data['thumbnail_alt'],
             'track': project_data['track'],
             'classyear': project_data['classyear'],
-            'image1_path': f'./static/projects/{project_data[0]}/images/image1.png',
+            'image1_path': url_for('static', filename=f'projects/{project_data[0]}/images/image1.png'),
             'image1_alt': project_data['image1_alt'],
             'image2_alt': project_data['image2_alt'],
             'video1_link': project_data['video1_link'],
@@ -117,10 +117,10 @@ def project_details(project_id):
             'video2_alt': project_data['video2_alt'],
         }
 
-        # Renders project details page
+        # Render project page with all details
         return render_template('project_details.html', project=project)
     else:
-        # Project with ID is not found
+        # Error with finding project
         return 'Project not found', 404
 
 
@@ -135,8 +135,11 @@ def newproject():
         classyear = request.form.get("classyear")
         track = request.form.get("track")
         project_description = request.form.get("project_description")
-        thumbnail_alt = request.form.get("thumbnail_alt")
+        thumbnail = request.files['thumbnail']
+        thumbnail_alt = request.form.get("thumbnail")
+        image1 = request.files['image1']
         image1_alt = request.form.get("image1_alt")
+        image2 = request.files['image2']
         image2_alt = request.form.get("image2_alt")
         video1_link = request.form.get("video1_link")
         video2_link = request.form.get("video2_link")
@@ -154,31 +157,25 @@ def newproject():
         with sqlite3.connect('projects.db') as connection:
                 cursor = connection.cursor()
                 cursor.execute(query, data)
+                project_id = cursor.lastrowid
                 connection.commit()
+        
+        # Creating the folder
+        project_folder = os.path.join("static", "projects", str(project_id))
+        images_folder = os.path.join(project_folder, "images")
+        os.makedirs(images_folder)
+
+        # Saving uploaded images to folder based on id for rendering later
+        thumbnail = request.files['thumbnail']
+        image1 = request.files['image1']
+        image2 = request.files['image2']
+
+        thumbnail.save(os.path.join(images_folder, "thumbnail.png"))
+        image1.save(os.path.join(images_folder, "image1.png"))
+        image2.save(os.path.join(images_folder, "image2.png"))
 
     return render_template('newproject.html')
 
-
-# @app.route('/project/<int:project_id>')
-# def project_detail(project_id):
-#     # In a real application, you'd fetch project details from your database
-#     # or data source based on project_id.
-#     # For this example, we'll use sample data.
-#     project = next((p for p in projects if p['id'] == project_id), None)
-#     if project:
-#         return render_template('project_detail.html', project=project)
-#     else:
-#         return 'Project not found'
-
-
-# @app.route('/projects', methods=['GET'])
-# @login_required
-# def projects():
-#     # how would we get the list of all projects and their thumbnails?
-#     #something like 
-#     return render_template("project_nav.html") #info=info, etc etc something like that
-#     #would include thumbnail image, title of project and person who made it, and link to the page?
-#     #how would we generate these pages?
 
 
 #------------------------------------------------------------------
