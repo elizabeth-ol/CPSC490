@@ -63,7 +63,7 @@ def project_nav():
             'track': project_data[4],
             'thumbnail_alt': project_data[5],
             }
-    projects.append(project)
+        projects.append(project)
        
     yearquery = "SELECT DISTINCT classyear FROM student_projects"
     
