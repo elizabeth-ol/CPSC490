@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Euler Graph</title>
+    <script type="text/javascript" src="d3.js"></script>
+    <style type="text/css">
+			
+        p {
+            display: inline-block;
+            text-align:center;
+        }
+
+        input {
+            height: 250px;
+            width: 30px;
+
+            /* Orient vertically */
+            -webkit-appearance: slider-vertical;
+            writing-mode: bt-lr;
+        }
+
+        .line {
+				fill: none;
+				stroke: teal;
+				stroke-width: 0.5;
+			}
+
+    </style>
+
+</head>
+
+
+<body> 
+<p>
+    <input id="slider" type="range" min="0" max="1" step="0.01" value="0.01" orient="vertical">
+</p>
+<script type="text/javascript"> 
+
+
+
+
+//Width and height
+let w = 1000;
+	let h = 1000;
+	let padding = 100;
+	let svg=d3.select("body").append("svg").attr("width", w).attr("height", h);
+
+
+        const min = -3;
+        const max = 3;
+
+        let dataset = [[0,-1]];
+
+
+        for (let i=1; i<=1000; i++){
+            dataset.push([(dataset[i-1][0]-dataset[i-1][1]*0.01), (dataset[i-1][1]+0.5*dataset[i-1][0]*0.01)])
+        }
+
+
+
+        let xScale = d3.scaleLinear()
+                .domain([min, max])
+                .range([0+padding , w -padding]);
+
+        let yScale = d3.scaleLinear()
+                .domain([min, max])
+                .range([h - padding-50, padding+50]);
+
+
+        //Create circles
+			svg.selectAll("circle")
+			   .data(dataset)
+			   .enter()
+			   .append("circle")
+			   .attr("cx", (d)=> {
+			   		return xScale(d[0]);
+			   })
+			   .attr("cy", (d)=> {
+			   		return yScale(d[1]);
+			   })
+			   .attr("r", 0.5);    
+
+               let line = d3.line()
+                        .x((d) => {return xScale(d[0])})
+                        .y((d) => {return yScale(d[1])});
+        
+               //Create line
+				svg.append("path")
+					.datum(dataset)
+					.attr("class", "line")
+					.attr("d", line)
+
+        let yAxis = d3.axisLeft()
+					.scale(yScale)
+					.ticks(10);
+                
+		let xAxis = d3.axisBottom()
+					.scale(xScale)
+					.ticks(10);
+
+        // draw y-axis
+				svg.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(" + 500 + ", 0)")
+					.call(yAxis);
+
+		// draw x-axis
+				svg.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(0, " + (h - 500) + ")")
+					.call(xAxis);
+
+ //On change, will update x and y values of circles and path
+ d3.select("input")
+				.on("change", function() {
+
+					let threshold = +d3.select(this).node().value;
+					
+                    dataset = [[0,-1]]
+                    for (let i=1; i<=1000; i++){
+                        dataset.push([(dataset[i-1][0]-dataset[i-1][1]*threshold), (dataset[i-1][1]+0.5*dataset[i-1][0]*threshold)])
+                    }
+
+					svg.selectAll("circle")
+                        .data(dataset)
+                        .attr("cx", (d)=> {
+			   		        return xScale(d[0]);
+			            })
+                        .attr("cy", (d)=> {
+                            return yScale(d[1]);
+                        });
+					
+
+                    //update path also
+                    svg.select(".line")
+                        .datum(dataset)
+					    .attr("d", line)
+
+
+				});
+
+</script>
+</body>
+</html>

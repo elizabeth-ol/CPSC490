@@ -71,8 +71,6 @@ def project_nav():
         cursor = connection.cursor()
         cursor.execute(yearquery)
         classyears_data = cursor.fetchall()
-
-    # Extract years from the result
         classyear_options = [years[0] for years in classyears_data]
 
     # Query for distinct tracks
@@ -110,11 +108,13 @@ def project_details(project_id):
             'classyear': project_data['classyear'],
             'image1_path': url_for('static', filename=f'projects/{project_data[0]}/images/image1.png'),
             'image1_alt': project_data['image1_alt'],
+            'image2_path': url_for('static', filename=f'projects/{project_data[0]}/images/image2.png'),
             'image2_alt': project_data['image2_alt'],
             'video1_link': project_data['video1_link'],
             'video1_alt': project_data['video1_alt'],
             'video2_link': project_data['video2_link'],
             'video2_alt': project_data['video2_alt'],
+            'sourcecode_path': url_for('static', filename=f'projects/{project_data[0]}/sourcecode.zip'),
         }
 
         # Render project page with all details
@@ -126,7 +126,7 @@ def project_details(project_id):
 
 #Route for adding new projects
 @app.route("/newproject", methods=["GET", "POST"])
-@login_required
+# @login_required
 def newproject():
 
     if request.method == "POST":
@@ -145,6 +145,8 @@ def newproject():
         video2_link = request.form.get("video2_link")
         video1_alt = request.form.get("video1_alt")
         video2_alt = request.form.get("video2_alt")
+        sourcecode = request.files['sourcecode']
+
 
 
         query = """
@@ -160,19 +162,20 @@ def newproject():
                 project_id = cursor.lastrowid
                 connection.commit()
         
-        # Creating the folder
+        # Creating folders
         project_folder = os.path.join("static", "projects", str(project_id))
         images_folder = os.path.join(project_folder, "images")
         os.makedirs(images_folder)
 
-        # Saving uploaded images to folder based on id for rendering later
-        thumbnail = request.files['thumbnail']
-        image1 = request.files['image1']
-        image2 = request.files['image2']
 
-        thumbnail.save(os.path.join(images_folder, "thumbnail.png"))
-        image1.save(os.path.join(images_folder, "image1.png"))
-        image2.save(os.path.join(images_folder, "image2.png"))
+        if thumbnail:
+            thumbnail.save(os.path.join(images_folder, "thumbnail.png"))
+        if image1:
+            image1.save(os.path.join(images_folder, "image1.png"))
+        if image2:
+            image2.save(os.path.join(images_folder, "image2.png"))
+        if sourcecode:
+            sourcecode.save(os.path.join(project_folder, "sourcecode.zip"))
 
     return render_template('newproject.html')
 

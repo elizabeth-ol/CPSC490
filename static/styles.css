@@ -17,10 +17,10 @@
   h1{
     font-size: 40px;
     font-family: "Neue-Haas-Grotesk";
-    padding-top:50px;
+    padding-top:10px;
     padding-right: 20px;
-    padding-bottom: 50px;
-    padding-left: 20px;
+    padding-bottom: 20px;
+    /* padding-left: 20px; */
   }
 
   button {
@@ -49,7 +49,8 @@
   }
 
    .project-thumbnails {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     flex-wrap: wrap;
     justify-content: space-around;
 }
@@ -58,9 +59,11 @@
     width: 300px;
     margin: 20px;
     padding: 10px;
-    border-radius: 25px;
+    border-radius: 15px;
     border: 1px solid black;
     text-align: center;
+    display: grid;
+    justify-content: center;
 }
 
 .project-thumbnail:hover {
@@ -69,6 +72,7 @@
 
 .project-thumbnail img {
     max-width: 100%;
+    max-height: 300px;
     border-radius: 5px;
     
 }
@@ -81,7 +85,50 @@
     font-size: 30px;
 }
 
-.project-thumbnail a {
+.project-thubnail-label{
+  margin-top: auto;
+}
+
+/* .project-thumbnail a {
     text-decoration: none;
     color: #0040ff;
+} */
+
+.hidden {
+  display: none !important;
+}
+
+.project-page img {
+  max-width: 50%;
+
+}
+
+.project-page .mediawrap {
+  display: flex;
+  gap: 24px;
+  flex-direction: row;
+}
+
+.dropdowns{
+  display:flex;
+  gap:10px;
+}
+
+.newproject {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-group {
+  display: grid;
+}
+
+a{
+  text-decoration: none;
+  color:black;
+}
+
+a.sourcecode {
+  color: #0040ff;
 }

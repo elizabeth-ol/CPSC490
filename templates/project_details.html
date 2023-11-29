@@ -4,14 +4,28 @@
 {% block header %}{{ project.project_title }}{% endblock %}
 {% block main %}
 
-<a href="/projects" class="btn btn-primary">Back to All Projects</a>
+<a href="/projects" class="btn btn-primary"> 	&lt;- Back to All Projects</a>
 
+<div class="project-page">
 <h1>{{ project.project_title }}</h1>
 <img src="{{ project.thumbnail_path }}" alt="{{ project.thumbnail_alt }}">
 <h2>by {{ project.student_name }}</h3>
 <h3>{{ project.track }} Track</h3>
 <h3>{{ project.classyear }}</h3>
-<img src="{{ project.image1_path }}" alt="{{ project.image1_alt }}">
+<div class="mediawrap">
+{% if project.image1_path %}
+    <img src="{{ project.image1_path }}" alt="{{ project.image1_alt }}">
+{% endif %}
+{% if project.image2_path %}
+    <img src="{{ project.image2_path }}" alt="{{ project.image2_alt }}">
+{% endif %}
+</div>
 <p>{{ project.project_description }}</p>
+{% if project.sourcecode_path %}
+</div>
+  <div>
+    <p><a href="{{ project.sourcecode_path }}" class="sourcecode" download>Download Source Code</a></p>
+  </div>
+{% endif %}
 
 {% endblock %}
