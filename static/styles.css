@@ -19,13 +19,13 @@
     font-family: "Neue-Haas-Grotesk";
     padding-top:10px;
     padding-right: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     /* padding-left: 20px; */
   }
 
   button {
     font-size: 16px;
-    background-color: #E5CFFC;
+    background-color: #FBDFFF;
     font-family: "Neue-Haas-Grotesk";
     border: none;
     color: black;
@@ -59,7 +59,7 @@
     width: 300px;
     margin: 20px;
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 10px;
     border: 1px solid black;
     text-align: center;
     display: grid;
@@ -67,7 +67,7 @@
 }
 
 .project-thumbnail:hover {
-  background-color: pink;
+  background-color: #FBDFFF;
 }
 
 .project-thumbnail img {
@@ -78,7 +78,7 @@
 }
 
 .project-thumbnail:hover img {
-  background-color: pink;
+  background-color: #FBDFFF;
 }
 
 .project-thumbnail h2 {
@@ -89,10 +89,6 @@
   margin-top: auto;
 }
 
-/* .project-thumbnail a {
-    text-decoration: none;
-    color: #0040ff;
-} */
 
 .hidden {
   display: none !important;
@@ -108,6 +104,11 @@
   gap: 24px;
   flex-direction: row;
 }
+
+.video-container {
+  flex: 1; 
+  max-width: 100%; 
+} 
 
 .dropdowns{
   display:flex;
@@ -131,4 +132,12 @@ a{
 
 a.sourcecode {
   color: #0040ff;
+}
+
+a.pdf {
+  color: #0040ff;
+}
+
+.custom-alert {
+  color: #256145;
 }

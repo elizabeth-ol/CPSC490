@@ -4,28 +4,55 @@
 {% block header %}{{ project.project_title }}{% endblock %}
 {% block main %}
 
+<!-- Be able to navigate back to all projects -->
 <a href="/projects" class="btn btn-primary"> 	&lt;- Back to All Projects</a>
 
+<!-- Rendering roject details based on form input -->
 <div class="project-page">
-<h1>{{ project.project_title }}</h1>
-<img src="{{ project.thumbnail_path }}" alt="{{ project.thumbnail_alt }}">
-<h2>by {{ project.student_name }}</h3>
-<h3>{{ project.track }} Track</h3>
-<h3>{{ project.classyear }}</h3>
+  <h1>{{ project.project_title }}</h1>
+  <h2>by {{ project.student_name }}</h2>
+  <img src="{{ project.thumbnail_path }}" alt="{{ project.thumbnail_alt }}">
+  <h3>{{ project.track }} Track</h3>
+  <h3>{{ project.classyear }}</h3>
+
+  <h2>Project Description</h2>
+  <p>{{ project.project_description }}</p>
+
+
+  <div class="mediawrap">
+    {% if project.image1_path %}
+        <img src="{{ project.image1_path }}" alt="{{ project.image1_alt }}">
+    {% endif %}
+    {% if project.image2_path %}
+        <img src="{{ project.image2_path }}" alt="{{ project.image2_alt }}">
+    {% endif %}
+  </div>
+<br>
+<br>
 <div class="mediawrap">
-{% if project.image1_path %}
-    <img src="{{ project.image1_path }}" alt="{{ project.image1_alt }}">
-{% endif %}
-{% if project.image2_path %}
-    <img src="{{ project.image2_path }}" alt="{{ project.image2_alt }}">
-{% endif %}
+  {% if project.video1_link %}
+    <!-- <div class="video-container"> -->
+        <iframe width="560" height="315" src="{{ project.video1_link.replace('watch?v=', 'embed/') }}" frameborder="0" allowfullscreen></iframe>
+    <!-- </div> -->
+  {% endif %}
+
+  {% if project.video2_link %}
+    <!-- <div class="video-container"> -->
+        <iframe width="560" height="315" src="{{ project.video2_link.replace('watch?v=', 'embed/') }}" frameborder="0" allowfullscreen></iframe>
+    <!-- </div> -->
+  {% endif %}
 </div>
-<p>{{ project.project_description }}</p>
 {% if project.sourcecode_path %}
-</div>
   <div>
     <p><a href="{{ project.sourcecode_path }}" class="sourcecode" download>Download Source Code</a></p>
   </div>
 {% endif %}
+
+{% if project.finalreport_path %}
+  <div>
+    <p><a href="{{ project.finalreport_path }}" class="pdf" download>Download Final Report PDF</a></p>
+  </div>
+{% endif %}
+</div>
 
 {% endblock %}

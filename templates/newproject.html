@@ -4,8 +4,30 @@
 {% block header %}Upload a new project{% endblock %}
 {% block main %}
 
+<!-- Be able to navigate back to all projects -->
+<a href="/projects" class="btn btn-primary"> 	&lt;- Back to All Projects</a>
+
 
 <h1>New Project Upload</h1>
+<p> Please make sure you upload content for all of the fields.</p>
+<p> This will ensure that everything renders correctly.</p>
+
+<!-- Success message so user knows their project was successfully uploaded -->
+{% if success_message %}
+        <div class="custom-alert alert" role="alert" id="success-alert">
+            {{ success_message }}
+        </div>
+
+        <script>
+            $(document).ready(function(){
+                setTimeout(function(){
+                    $("#success-alert").hide();
+                }, 4000);
+            });
+        </script>
+    {% endif %}
+
+<!-- Form for uploading information for the project -->
 <form action="/newproject" method="post" enctype="multipart/form-data" class="newproject">
   <div class="form-group">
     <label for="student_name">Student Name</label>
@@ -17,6 +39,8 @@
     <input type="text" class="form-control" id="project_title" name="project_title" placeholder="ex: An Exploration of Computer Music">
   </div>
   <br>
+  <!-- Class year inputs will be updated manually each year to add them following the format 
+   <option>2023-2024</option>, with the first year being fall and second spring of that academic year-->
   <div class="form-group">
     <label for="classyear">Graduation Year</label>
     <select class="form-control" id="classyear" name="classyear">
@@ -26,6 +50,7 @@
     </select>
   </div>
   <br>
+  <!-- Tracks can be added here as well as an option, if new tracks end up being added in future years -->
   <div class="form-group">
     <label for="track">Track</label>
     <select class="form-control" id="track" name="track">
@@ -44,7 +69,7 @@
   </div>
   <br>
     <div class="form-group">
-      <label for="thumbnail">Upload Thumbnail</label>
+      <label for="thumbnail">Upload Thumbnail (300px by 300px recommended)</label>
       <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
     </div>
   <br>
@@ -74,7 +99,7 @@
   </div>
   <br>
   <div class="form-group">
-    <label for="video1_link">Video 1 Link</label>
+    <label for="video1_link">Video 1 Link (must be a YouYube video)</label>
     <input type="text" class="form-control" id="video1_link" name="video1_link" placeholder="https://example.com">
   </div>
   <br>
@@ -84,7 +109,7 @@
   </div>
   <br>
   <div class="form-group">
-    <label for="video2_link">Video 2 Link</label>
+    <label for="video2_link">Video 2 Link (must be a YouYube video)</label>
     <input type="text" class="form-control" id="video2_link" name="video2_link" placeholder="https://example.com">
   </div>
   <br>
@@ -98,6 +123,11 @@
       <input type="file" class="form-control-file" id="sourcecode" name="sourcecode">
     </div>
   <br>
+  <div class="form-group">
+    <label for="final_report">Upload Final Report as PDF</label>
+    <input type="file" class="form-control-file" id="final_report" name="final_report">
+  </div>
+<br>
 
   <button type="submit" class="btn btn-primary my-1">Upload to Database</button>
 

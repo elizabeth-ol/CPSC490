@@ -1,3 +1,4 @@
+/* this is the command to make the student_projects table in projects.db */
 CREATE TABLE student_projects(
 id INTEGER PRIMARY KEY,
 student_name TEXT,
