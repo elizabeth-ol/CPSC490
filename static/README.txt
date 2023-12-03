@@ -9,3 +9,6 @@ these video clips can also just be audio, but must be in mp4 format.
 
 Each student will make a file with their content titled FirstLast (filling in their first and last name).
 
+
+-things need to be installed
+

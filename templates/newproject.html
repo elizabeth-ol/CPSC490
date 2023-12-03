@@ -9,8 +9,6 @@
 
 
 <h1>New Project Upload</h1>
-<p> Please make sure you upload content for all of the fields.</p>
-<p> This will ensure that everything renders correctly.</p>
 
 <!-- Success message so user knows their project was successfully uploaded -->
 {% if success_message %}
@@ -26,6 +24,11 @@
             });
         </script>
     {% endif %}
+    
+<p> Please make sure you upload content for all of the fields.</p>
+<p> This will ensure that everything renders correctly.</p>
+
+
 
 <!-- Form for uploading information for the project -->
 <form action="/newproject" method="post" enctype="multipart/form-data" class="newproject">

@@ -14,3 +14,9 @@ video1_alt TEXT,
 video2_link TEXT,
 video2_alt TEXT
 );
+
+/* this is the command to make the admin users table in projects.db */
+CREATE TABLE admin_users(
+    id INTEGER PRIMARY KEY,
+    netid TEXT
+);

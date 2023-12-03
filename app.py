@@ -4,6 +4,7 @@ from flask_session import Session
 from flask_cas import CAS, login_required, login, logout, routing
 import sqlite3
 import json
+import logging
 
 setattr(routing, 'basestring', str)
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -22,7 +23,7 @@ app.secret_key = os.urandom(64)
 
 #-----------------------------------------------------------------
 
-# #Route for informational homepage
+# This is code from the retired homepage
 # @app.route('/', methods=['GET'])
 # @app.route('/index', methods=['GET'])
 # @login_required
@@ -85,6 +86,7 @@ def format_title_from_url(url_title):
     return url_title.replace('-', ' ')
 
 
+
 #Route for when new page is opened with the project details
 @app.route('/project/<int:project_id>/<path:project_title>')
 def project_details(project_id, project_title):
@@ -134,6 +136,7 @@ def project_details(project_id, project_title):
 
 
 
+
 #Route for adding new projects
 @app.route("/newproject", methods=["GET", "POST"])
 @login_required
@@ -143,64 +146,72 @@ def newproject():
     #to show success in uploading to database
     success_message = None  
 
-    #Getting all the information from the form
     if request.method == "POST":
-        student_name = request.form.get("student_name")
-        project_title = request.form.get("project_title")
-        classyear = request.form.get("classyear")
-        track = request.form.get("track")
-        project_description = request.form.get("project_description")
-        thumbnail = request.files['thumbnail']
-        thumbnail_alt = request.form.get("thumbnail")
-        image1 = request.files['image1']
-        image1_alt = request.form.get("image1_alt")
-        image2 = request.files['image2']
-        image2_alt = request.form.get("image2_alt")
-        video1_link = request.form.get("video1_link")
-        video2_link = request.form.get("video2_link")
-        video1_alt = request.form.get("video1_alt")
-        video2_alt = request.form.get("video2_alt")
-        sourcecode = request.files['sourcecode']
-        final_report = request.files['final_report']
+        #Getting all the information from the form
+            student_name = request.form.get("student_name")
+            project_title = request.form.get("project_title")
+            classyear = request.form.get("classyear")
+            track = request.form.get("track")
+            project_description = request.form.get("project_description")
+            thumbnail = request.files['thumbnail']
+            thumbnail_alt = request.form.get("thumbnail")
+            image1 = request.files['image1']
+            image1_alt = request.form.get("image1_alt")
+            image2 = request.files['image2']
+            image2_alt = request.form.get("image2_alt")
+            video1_link = request.form.get("video1_link")
+            video2_link = request.form.get("video2_link")
+            video1_alt = request.form.get("video1_alt")
+            video2_alt = request.form.get("video2_alt")
+            sourcecode = request.files['sourcecode']
+            final_report = request.files['final_report']
 
 
-        #Making the query for inserting all of the information into the database
-        query = """
-                INSERT INTO student_projects (student_name, project_title, classyear, track, project_description,thumbnail_alt, image1_alt, image2_alt, video1_link, video2_link, video1_alt, video2_alt)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """
-        #Getting all the information and inserting into the database with the query above
-        data = (student_name, project_title, classyear, track, project_description,thumbnail_alt, image1_alt, image2_alt, video1_link, video2_link, video1_alt, video2_alt)
-        with sqlite3.connect('projects.db') as connection:
-                cursor = connection.cursor()
-                cursor.execute(query, data)
-                project_id = cursor.lastrowid
-                connection.commit()
-        
-        #Once the data is uploaded, this acts as a confirmation to the user
-        #and will appear on top of the screen
-        success_message = "Project successfully uploaded!"
-        
-        # Creating folder to store images and source code
-        project_folder = os.path.join("static", "projects", str(project_id))
-        images_folder = os.path.join(project_folder, "images")
-        os.makedirs(images_folder)
+            #Making the query for inserting all of the information into the database
+            query = """
+                    INSERT INTO student_projects (student_name, project_title, classyear, track, project_description,thumbnail_alt, image1_alt, image2_alt, video1_link, video2_link, video1_alt, video2_alt)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """
+            #Getting all the information and inserting into the database with the query above
+            data = (student_name, project_title, classyear, track, project_description,thumbnail_alt, image1_alt, image2_alt, video1_link, video2_link, video1_alt, video2_alt)
+            with sqlite3.connect('projects.db') as connection:
+                    cursor = connection.cursor()
+                    cursor.execute(query, data)
+                    project_id = cursor.lastrowid
+                    connection.commit()
+            
+            #Once the data is uploaded, this acts as a confirmation to the user
+            #and will appear on top of the screen
+            success_message = "Project successfully uploaded!"
+            
+            # Creating folder to store images and source code
+            project_folder = os.path.join("static", "projects", str(project_id))
+            images_folder = os.path.join(project_folder, "images")
+            os.makedirs(images_folder)
 
-        #Only saving things if they were uploaded
-        if thumbnail:
-            thumbnail.save(os.path.join(images_folder, "thumbnail.png"))
-        if image1:
-            image1.save(os.path.join(images_folder, "image1.png"))
-        if image2:
-            image2.save(os.path.join(images_folder, "image2.png"))
-        if sourcecode:
-            sourcecode.save(os.path.join(project_folder, "sourcecode.zip"))
-        if final_report:
-            final_report.save(os.path.join(project_folder, "finalreport.pdf"))
-        
-
-    return render_template('newproject.html', success_message=success_message)
-
+            #Only saving things if they were uploaded
+            if thumbnail:
+                thumbnail.save(os.path.join(images_folder, "thumbnail.png"))
+            if image1:
+                image1.save(os.path.join(images_folder, "image1.png"))
+            if image2:
+                image2.save(os.path.join(images_folder, "image2.png"))
+            if sourcecode:
+                sourcecode.save(os.path.join(project_folder, "sourcecode.zip"))
+            if final_report:
+                final_report.save(os.path.join(project_folder, "finalreport.pdf"))
+            
+            return render_template('newproject.html', success_message=success_message)
+     #Data we need for project details
+    with sqlite3.connect('projects.db') as connection:
+        connection.row_factory = sqlite3.Row
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM admin_users WHERE netid = ?", (cas.username,))
+        admin_user = cursor.fetchone()
+    if admin_user:
+        return render_template('newproject.html', success_message=success_message)
+    else:
+        return render_template('forbidden.html')
 
 
 #------------------------------------------------------------------
