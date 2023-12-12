@@ -20,3 +20,19 @@ CREATE TABLE admin_users(
     id INTEGER PRIMARY KEY,
     netid TEXT
 );
+
+
+/* Command to open the SQL terminal*/
+sqlite3 projects.db
+
+/* this is the command to add an admin user to the admin_users table in projects.db */
+INSERT INTO admin_users (netid) VALUES ('insertnetidhere');
+
+/* this is the command to insert multiple users to the admin_users table in projects.db */
+INSERT INTO admin_users (netid) VALUES ('insertnetidhere'), ('insertnetidhere'), ('insertnetidhere');
+
+/* this is the command to drop an admin user from the admin_users table in projects.db */
+DELETE FROM admin_users WHERE netid = "insertnetidhere";
+
+/* Command to close the SQL terminal*/
+ctrl+D

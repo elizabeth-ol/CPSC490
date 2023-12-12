@@ -1,10 +1,8 @@
 import os
 from flask import Flask, session, request, redirect, make_response, render_template, url_for
-from flask_session import Session
 from flask_cas import CAS, login_required, login, logout, routing
 import sqlite3
-import json
-import logging
+
 
 setattr(routing, 'basestring', str)
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -30,7 +28,7 @@ app.secret_key = os.urandom(64)
 # def index():
 
 #     html = render_template('index.html')
-#         #username=cas.username) # Can get token with cas.token if needed
+#     #username=cas.username) # Can get token with cas.token if needed
 #     response = make_response(html)
 #     return response
 
@@ -63,7 +61,7 @@ def project_nav():
             }
         projects.append(project)
        
-    # Adding years to the dropdown
+    #Adding years to the dropdown
     yearquery = "SELECT DISTINCT classyear FROM student_projects"
     with sqlite3.connect('projects.db') as connection:
         cursor = connection.cursor()
@@ -71,7 +69,7 @@ def project_nav():
         classyears_data = cursor.fetchall()
         classyear_options = [years[0] for years in classyears_data]
 
-    # Adding tracks to the dropdown
+    #Adding tracks to the dropdown
     track_query = "SELECT DISTINCT track FROM student_projects"
     with sqlite3.connect('projects.db') as connection:
         cursor = connection.cursor()
@@ -82,9 +80,9 @@ def project_nav():
     return render_template('project_nav.html', projects=projects, classyear_options=classyear_options, track_options=track_options)
 
 
+#Function for formatting titles for the URLs to be dash separated
 def format_title_from_url(url_title):
     return url_title.replace('-', ' ')
-
 
 
 #Route for when new page is opened with the project details
@@ -102,6 +100,7 @@ def project_details(project_id, project_title):
         cursor.execute("SELECT * FROM student_projects WHERE id = ? AND project_title = ?", (project_id, original_title))
         project_data = cursor.fetchone()
 
+    #Getting the data we need to pass to Jinja template
     if project_data:
         project = {
             'id': project_data[0],
@@ -112,7 +111,6 @@ def project_details(project_id, project_title):
             'classyear': project_data['classyear'],
             'thumbnail_alt': project_data['thumbnail_alt'],
             'thumbnail_path': url_for('static', filename=f'projects/{project_data[0]}/images/thumbnail.png'),
-             # if os.path.exists(f'projects/{project_data[0]}/images/thumbnail.png') else '',
             'image1_alt': project_data['image1_alt'],
             'image1_path': url_for('static', filename=f'projects/{project_data[0]}/images/image1.png'),#if os.path.exists(f'projects/{project_data[0]}/images/image1.png') else '',
             'image2_alt': project_data['image2_alt'],
@@ -122,15 +120,13 @@ def project_details(project_id, project_title):
             'video2_link': project_data['video2_link'] if project_data['video2_link'] else None,  # Check if video2_link exists in the database
             'video2_alt': project_data['video2_alt'] if project_data['video2_link'] else None,  # If video2_link doesn't exist, set video2_alt to None
             'sourcecode_path': url_for('static', filename=f'projects/{project_data[0]}/sourcecode.zip'),
-            #if os.path.exists(f'projects/{project_data[0]}/sourcecode.zip') else '',
             'finalreport_path': url_for('static', filename=f'projects/{project_data[0]}/finalreport.pdf'),
-             # if os.path.exists(f'projects/{project_data[0]}/finalreport.pdf') else '',
         }
 
-        # Render project page with all details
+        #Render project page with all details
         return render_template('project_details.html', project=project)
     else:
-        # Error with finding project
+        #Error with finding project
         return 'Project not found', 404
 
 
@@ -154,7 +150,7 @@ def newproject():
             track = request.form.get("track")
             project_description = request.form.get("project_description")
             thumbnail = request.files['thumbnail']
-            thumbnail_alt = request.form.get("thumbnail")
+            thumbnail_alt = request.form.get("thumbnail_alt")
             image1 = request.files['image1']
             image1_alt = request.form.get("image1_alt")
             image2 = request.files['image2']
@@ -184,7 +180,7 @@ def newproject():
             #and will appear on top of the screen
             success_message = "Project successfully uploaded!"
             
-            # Creating folder to store images and source code
+            #Creating folder to store images, source code and final report
             project_folder = os.path.join("static", "projects", str(project_id))
             images_folder = os.path.join(project_folder, "images")
             os.makedirs(images_folder)
@@ -202,7 +198,8 @@ def newproject():
                 final_report.save(os.path.join(project_folder, "finalreport.pdf"))
             
             return render_template('newproject.html', success_message=success_message)
-     #Data we need for project details
+    
+    #Checking if admin so we know if to render the new project page or forbidden page
     with sqlite3.connect('projects.db') as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()

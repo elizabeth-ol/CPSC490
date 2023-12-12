@@ -1,3 +1,4 @@
+<!--Template for rendering individual project details-->
 {% extends "layout.html" %}
 
 {% block title %}{{ project.project_title }}{% endblock %}
@@ -7,7 +8,7 @@
 <!-- Be able to navigate back to all projects -->
 <a href="/projects" class="btn btn-primary"> 	&lt;- Back to All Projects</a>
 
-<!-- Rendering roject details based on form input -->
+<!-- Rendering project details based on form input -->
 <div class="project-page">
   <h1>{{ project.project_title }}</h1>
   <h2>by {{ project.student_name }}</h2>
