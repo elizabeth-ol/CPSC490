@@ -112,13 +112,13 @@ def project_details(project_id, project_title):
             'thumbnail_alt': project_data['thumbnail_alt'],
             'thumbnail_path': url_for('static', filename=f'projects/{project_data[0]}/images/thumbnail.png'),
             'image1_alt': project_data['image1_alt'],
-            'image1_path': url_for('static', filename=f'projects/{project_data[0]}/images/image1.png'),#if os.path.exists(f'projects/{project_data[0]}/images/image1.png') else '',
+            'image1_path': url_for('static', filename=f'projects/{project_data[0]}/images/image1.png'),#this was giving errors, but something like this might be helpful in the future if os.path.exists(f'projects/{project_data[0]}/images/image1.png') else '',
             'image2_alt': project_data['image2_alt'],
-            'image2_path': url_for('static', filename=f'projects/{project_data[0]}/images/image2.png'), # if os.path.exists(f'projects/{project_data[0]}/images/image2.png') else '',
-            'video1_link': project_data['video1_link'] if project_data['video1_link'] else None,  # Check if video1_link exists in the database
-            'video1_alt': project_data['video1_alt'] if project_data['video1_link'] else None,  # If video1_link doesn't exist, set video1_alt to None
-            'video2_link': project_data['video2_link'] if project_data['video2_link'] else None,  # Check if video2_link exists in the database
-            'video2_alt': project_data['video2_alt'] if project_data['video2_link'] else None,  # If video2_link doesn't exist, set video2_alt to None
+            'image2_path': url_for('static', filename=f'projects/{project_data[0]}/images/image2.png'), #this was giving errors, but something like this might be helpful in the future if os.path.exists(f'projects/{project_data[0]}/images/image2.png') else '',
+            'video1_link': project_data['video1_link'] if project_data['video1_link'] else None, 
+            'video1_alt': project_data['video1_alt'] if project_data['video1_link'] else None, 
+            'video2_link': project_data['video2_link'] if project_data['video2_link'] else None,  
+            'video2_alt': project_data['video2_alt'] if project_data['video2_link'] else None,  
             'sourcecode_path': url_for('static', filename=f'projects/{project_data[0]}/sourcecode.zip'),
             'finalreport_path': url_for('static', filename=f'projects/{project_data[0]}/finalreport.pdf'),
         }
