@@ -1,6 +1,6 @@
 import os
-from flask import Flask, session, request, redirect, make_response, render_template, url_for
-from flask_cas import CAS, login_required, login, logout, routing
+from flask import Flask, request, render_template, url_for
+from flask_cas import CAS, login_required, routing
 import sqlite3
 
 
@@ -13,24 +13,6 @@ app.config['CAS_AFTER_LOGOUT'] = 'https://127.0.0.1:5001/'
 app.secret_key = os.urandom(64)
 
 #----------------------------------------------------------
-# @app.before_request
-# def before_request():
-#     if not request.is_secure:
-#         url = request.url.replace('http://', 'https://', 1)
-#         return redirect(url, code=301)
-
-#-----------------------------------------------------------------
-
-# This is code from the retired homepage
-# @app.route('/', methods=['GET'])
-# @app.route('/index', methods=['GET'])
-# @login_required
-# def index():
-
-#     html = render_template('index.html')
-#     #username=cas.username) # Can get token with cas.token if needed
-#     response = make_response(html)
-#     return response
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])

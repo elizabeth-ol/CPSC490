@@ -32,15 +32,11 @@
 <br>
 <div class="mediawrap">
   {% if project.video1_link %}
-    <!-- <div class="video-container"> -->
         <iframe width="560" height="315" src="{{ project.video1_link.replace('watch?v=', 'embed/') }}" frameborder="0" allowfullscreen></iframe>
-    <!-- </div> -->
   {% endif %}
 
   {% if project.video2_link %}
-    <!-- <div class="video-container"> -->
         <iframe width="560" height="315" src="{{ project.video2_link.replace('watch?v=', 'embed/') }}" frameborder="0" allowfullscreen></iframe>
-    <!-- </div> -->
   {% endif %}
 </div>
 {% if project.sourcecode_path %}

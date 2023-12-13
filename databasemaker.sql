@@ -25,6 +25,9 @@ CREATE TABLE admin_users(
 /* Command to open the SQL terminal*/
 sqlite3 projects.db
 
+/* this is the command to delete a project from the student_projects table in projects.db */
+DELETE FROM student_projects WHERE id = #;
+
 /* this is the command to add an admin user to the admin_users table in projects.db */
 INSERT INTO admin_users (netid) VALUES ('insertnetidhere');
 
